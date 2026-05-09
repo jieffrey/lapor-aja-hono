@@ -4,10 +4,16 @@
     "dev": "bun run --hot src/index.ts"
   },
   "dependencies": {
+    "LaporAja-bun": ".",
+    "dotenv": "^17.4.2",
     "hono": "^4.12.17",
-    "pg": "^8.20.0"
+    "pg": "^8.20.0",
+    "postgres": "^3.4.9"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/dotenv": "^6.1.1",
+    "@types/node": "^25.6.2",
+    "@types/pg": "^8.20.0"
   }
 }
