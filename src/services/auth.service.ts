@@ -1,4 +1,3 @@
-import { resourceLimits } from "node:worker_threads";
 import pool from "../database/database";
 
 export const emailValidate = async (email: string) =>{
