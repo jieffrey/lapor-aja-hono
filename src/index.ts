@@ -1,11 +1,12 @@
-import { Hono } from 'hono'
+import { Hono } from "hono"
 
 const app = new Hono()
 
-app.get('/', (c) => {
-  return c.json({
-    message: 'Hello, World!',
-  })
+app.get("/", (c) => {
+  return c.text("LaporAja API Running")
 })
 
-export default app
+export default {
+  port: Number(process.env.PORT) || 3000,
+  fetch: app.fetch
+}
