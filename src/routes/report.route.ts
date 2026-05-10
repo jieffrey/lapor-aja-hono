@@ -4,8 +4,8 @@ import {
     getReports,
     getReportById,
     updateReport, 
-    deleteReport } 
-    from "../controllers/report.controller";
+    deleteReport 
+} from "../controllers/report.controller";
 import { verifyToken } from "../middlewares/verify";
 import { ownerOnly } from "../middlewares/owner";
 
