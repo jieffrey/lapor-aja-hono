@@ -8,7 +8,7 @@ export const createReportService = async (
 ) => {
     const result = await pool.query(
         `INSERT INTO report (user_id, title, description, category)
-        VALUES ($1, $2, $3, $4)`,
+        VALUES ($1, $2, $3, $4) RETURNING *`,
         [user_id, title, description, category]
     )
     return result.rows[0]
@@ -16,7 +16,7 @@ export const createReportService = async (
 
 export const getReportService = async () => {
     const result = await pool.query(
-        `SELECT  report.* , users.name 
+        `SELECT report.*, users.name 
         FROM report 
         JOIN users
         ON users.id = report.user_id

@@ -5,9 +5,7 @@ import {
     updateReportService,
     deleteReportService,
     getReportByIdService
-}
-    from "../services/report.service";
-import { CpuInfo } from "node:os";
+} from "../services/report.service";
 
 export const createReport = async (c: Context) => {
     try {
