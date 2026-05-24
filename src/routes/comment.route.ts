@@ -9,7 +9,7 @@ import { verifyToken } from "../middlewares/verify";
 const commmentRoute = new Hono()
 
 commmentRoute.get("/report/:reportId", getComment)
-commmentRoute.post("/", createComment, verifyToken)
-commmentRoute.delete("/report/:reportId", deleteComment, verifyToken)
+commmentRoute.post("/", verifyToken, createComment)
+commmentRoute.delete("/report/:reportId", verifyToken, deleteComment)
 
 export default commmentRoute

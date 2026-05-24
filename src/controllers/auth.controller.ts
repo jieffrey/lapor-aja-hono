@@ -38,7 +38,7 @@ export const register = async (c: Context) => {
             {
                 success: false,
                 message: "Register Failed", error
-            }
+            },500
         )
     }
 }
@@ -79,16 +79,18 @@ export const login = async (c: Context) => {
             user.role
         )
 
+        const { password: _, ...userData } = user
 
-        if (!token) {
+        
             return c.json(
                 {
                     success: true,
                     message: "Login Success!",
+                    data: userData,
                     token
                 },201
             )
-        }
+            
     } catch (error) {
         return c.json(
             {

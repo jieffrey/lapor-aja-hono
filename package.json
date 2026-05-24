@@ -6,6 +6,8 @@
   "dependencies": {
     "LaporAja-bun": ".",
     "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.10.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "hono": "^4.12.17",
     "jsonwebtoken": "^9.0.3",

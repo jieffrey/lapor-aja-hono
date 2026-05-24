@@ -10,9 +10,9 @@ import { checkRole } from "../middlewares/check";
 
 const userRoute = new Hono()
 
-userRoute.get("/", getUsers, verifyToken, checkRole(['superadmin']))
-userRoute.get("/:id", getUserById, verifyToken, checkRole(['superadmin']))
-userRoute.patch("/:id", updateUserRole, verifyToken, checkRole(['superadmin']))
-userRoute.delete("/:id", deleteUser, verifyToken, checkRole(['superadmin']))
+userRoute.get("/", verifyToken, checkRole(['superadmin']), getUsers)
+userRoute.get("/:id", verifyToken, checkRole(['superadmin']), getUserById)
+userRoute.patch("/:id", verifyToken, checkRole(['superadmin']), updateUserRole)
+userRoute.delete("/:id", verifyToken, checkRole(['superadmin']), deleteUser)
 
 export default userRoute
