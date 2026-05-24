@@ -5,12 +5,15 @@ export const createReportService = async (
     title: string,
     description: string,
     category: string,
-    image_before: string
+    priority: string,
+    latitude: string,
+    longitude: string,
+    image_before: string | null
 ) => {
     const result = await pool.query(
-        `INSERT INTO report (user_id, title, description, category, image_before)
-        VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-        [user_id, title, description, category, image_before]
+        `INSERT INTO report (user_id, title, description, category, priority, latitude, longitude, image_before)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+        [user_id, title, description, category, priority, latitude, longitude, image_before]
     )
     return result.rows[0]
 }

@@ -6,38 +6,51 @@ import {
     deleteReportService,
     getReportByIdService
 } from "../services/report.service";
+import cloudinary from "../utils/cloudinary";
 
 export const createReport = async (c: Context) => {
     try {
-        const body = await c.req.json()
+        const formData = await c.req.formData()
 
-        const payload = c.get(
-            "jwtPayload"
-        ) as {
-            id: number,
-            role: string
+        const title       = formData.get("title") as string
+        const description = formData.get("description") as string
+        const category    = formData.get("category") as string
+        const priority    = formData.get("priority") as string
+        const latitude    = formData.get("latitude") as string
+        const longitude   = formData.get("longitude") as string
+        const file        = formData.get("image_before") as File | null
+
+        const payload = c.get("jwtPayload") as { id: number; role: string }
+
+        let imageUrl: string | null = null
+        if (file && file.size > 0) {
+            const buffer      = await file.arrayBuffer()
+            const base64      = Buffer.from(buffer).toString("base64")
+            const dataUri     = `data:${file.type};base64,${base64}`
+
+            const uploaded = await cloudinary.uploader.upload(dataUri, {
+                folder: "laporaja/reports",
+            })
+            imageUrl = uploaded.secure_url
         }
 
         const report = await createReportService(
             String(payload.id),
-            body.title,
-            body.description,
-            body.category
+            title,
+            description,
+            category,
+            priority,
+            latitude,
+            longitude,
+            imageUrl
         )
-        return c.json(
-            {
-                success: true,
-                message: "Report Created",
-                data: report
-            }, 201
-        )
+
+        return c.json({ success: true, message: "Report Created", data: report }, 201)
+
     } catch (error) {
-        return c.json(
-            {
-                success: false,
-                message: "Failed Create Report!", error
-            }, 500
-        )
+        // ✅ tampilkan pesan error yang readable
+        const message = error instanceof Error ? error.message : String(error)
+        return c.json({ success: false, message: "Failed Create Report!", error: message }, 500)
     }
 }
 
@@ -111,7 +124,8 @@ export const updateReport = async (c: Context) => {
             id,
             body.title,
             body.description,
-            body.category
+            body.category,
+            body.image_before
         )
 
         return c.json(

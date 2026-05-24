@@ -18,7 +18,7 @@ export const getCommentService = async (reportId: string) => {
         `SELECT comments.*, users.name
         FROM comments
         JOIN users
-        ON users_id = comments.user_id
+        ON user_id = comments.user_id
         WHERE report_id = $1
         ORDER BY comments.id DESC`, [reportId]
     )
