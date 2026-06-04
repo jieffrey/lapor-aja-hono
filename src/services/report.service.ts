@@ -48,8 +48,9 @@ export const updateReportService = async (
     title: string,
     description: string,
     category: string,
-    image_before: string
-) => {
+    image_before: string,
+    priority: string
+) =>{
     const result = await pool.query(
         `UPDATE report
         SET 
@@ -57,10 +58,11 @@ export const updateReportService = async (
         description = $2,
         category = $3,
         image_before = $4,
+        priority = $5
         updated_at = CURRENT_TIMESTAMP
-        WHERE id = $5
+        WHERE id = $6
         RETURNING *`,
-        [title, description, category, image_before, id]
+        [title, description, category, image_before,priority, id]
     )
     return result.rows[0]
 }
@@ -69,4 +71,21 @@ export const deleteReportService = async (id: string) => {
     const result = await pool.query(
         `DELETE FROM report WHERE id = $1`, [id]
     )
+}
+export const updateReportStatusService = async (
+  id: string,
+  status: string
+) => {
+  const result = await pool.query(
+    `
+    UPDATE report
+    SET status = $1,
+        updated_at = NOW()
+    WHERE id = $2
+    RETURNING *
+    `,
+    [status, id]
+  )
+
+  return result.rows[0]
 }

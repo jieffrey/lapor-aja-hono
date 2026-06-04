@@ -4,7 +4,8 @@ import {
     getReportService,
     updateReportService,
     deleteReportService,
-    getReportByIdService
+    getReportByIdService,
+    updateReportStatusService
 } from "../services/report.service";
 import cloudinary from "../utils/cloudinary";
 
@@ -105,45 +106,82 @@ export const getReportById = async (c: Context) => {
     }
     }
 
-export const updateReport = async (c: Context) => {
-    try {
-        const id = c.req.param("id")
+    export const updateReport = async (c: Context) => {
+        try {
+            const id = c.req.param("id")
 
-        if (!id) {
+            if (!id) {
+                return c.json(
+                    {
+                        success: false,
+                        message: "Missing id parameter"
+                    }, 400
+                )
+            }
+
+            const body = await c.req.json()
+
+            const report = await updateReportService(
+                id,
+                body.title,
+                body.description,
+                body.category,
+                body.image_before
+            )
+
             return c.json(
                 {
-                    success: false,
-                    message: "Missing id parameter"
-                }, 400
+                    success: true,
+                    message: "Report Updated", data: report
+                }, 200
             )
-        }
+        } catch (error) {
+    console.error("UPDATE ERROR:", error)
 
-        const body = await c.req.json()
-
-        const report = await updateReportService(
-            id,
-            body.title,
-            body.description,
-            body.category,
-            body.image_before
-        )
-
-        return c.json(
-            {
-                success: true,
-                message: "Report Updated", data: report
-            }, 200
-        )
-    } catch (error) {
-        return c.json(
-            {
-                success: false,
-                message: "Failed Update Report!", error
-            }, 500
-        )
-    }
+    return c.json({
+        success: false,
+        message: "Failed Update Report!",
+        error: error instanceof Error ? error.message : String(error)
+    }, 500)
 }
+    }
+    
+export const updateReportStatus = async (c: Context) => {
+  try {
+    console.log("UPDATE REPORT MASUK")
+    const id = c.req.param("id")
+                console.log("REPORT ID:", id)
+    
+    if (!id) {
+      return c.json(
+        {
+          success: false,
+          message: "Missing id parameter"
+        }, 400
+      )
+    }
+    
+    const body = await c.req.json()
 
+    const report = await updateReportStatusService(
+      id,
+      body.status
+    )
+
+    return c.json({
+      success: true,
+      data: report
+    })
+  } catch (error) {
+    console.error(error)
+
+    return c.json({
+      success: false,
+      message: "Failed update status"
+    }, 500)
+  }
+}
+    
 export const deleteReport = async (c: Context) => {
     try {
         const id = c.req.param("id")
