@@ -4,24 +4,19 @@ import reportRoute from "./routes/report.route";
 import commmentRoute from "./routes/comment.route";
 import userRoute from "./routes/user.route";
 import { cors } from "hono/cors";
+import * as Jwt from "jsonwebtoken"
 
 const app = new Hono()
 
 app.use(
   "*",
   cors({
-    origin: "http://localhost:3000",
-    allowHeaders: [
-      "Content-Type",
-      "Authorization"
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
     ],
-    allowMethods: [
-      "POST",
-      "GET",
-      "PUT",
-      "DELETE",
-      "OPTIONS"
-    ],
+    allowHeaders: ["Content-Type", "Authorization"],
+    allowMethods: ["POST", "GET", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,
   })
 )
@@ -34,6 +29,27 @@ app.route("/auth", authRoute)
 app.route("/reports", reportRoute)
 app.route("/comments", commmentRoute)
 app.route("/user", userRoute)
+
+app.get("/debug-token", async (c) => {
+  const auth = c.req.header("Authorization")
+
+  console.log("AUTH:", auth)
+
+  if (!auth) {
+    return c.json({ error: "No Authorization header" })
+  }
+
+  const token = auth.replace("Bearer ", "")
+
+  console.log("TOKEN:", token)
+
+  const decoded = Jwt.verify(
+    token,
+    process.env.JWT_SECRET as string
+  )
+
+  return c.json(decoded)
+})
 
 
 export default {

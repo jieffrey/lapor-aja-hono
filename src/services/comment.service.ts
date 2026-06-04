@@ -15,12 +15,11 @@ export const createCommentService = async (
 
 export const getCommentService = async (reportId: string) => {
     const result = await pool.query(
-        `SELECT comments.*, users.name
-        FROM comments
-        JOIN users
-        ON user_id = comments.user_id
-        WHERE report_id = $1
-        ORDER BY comments.id DESC`, [reportId]
+        `SELECT comments.*, users.name 
+FROM comments 
+JOIN users ON users.id = comments.user_id
+WHERE comments.report_id = $1
+ORDER BY comments.created_at ASC`, [reportId]
     )
     return result.rows
 }
