@@ -10,7 +10,6 @@ import {
 import { verifyToken } from "../middlewares/verify";
 import { ownerOnly } from "../middlewares/owner";
 import { checkRole } from "../middlewares/check";
-import { verifyTokenDebug } from "../middlewares/verifyTokenDebug";
 
 const reportRoute = new Hono()
 

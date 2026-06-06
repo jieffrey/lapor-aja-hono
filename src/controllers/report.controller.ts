@@ -126,6 +126,7 @@ export const getReportById = async (c: Context) => {
                 body.title,
                 body.description,
                 body.category,
+                body.priority,
                 body.image_before
             )
 
