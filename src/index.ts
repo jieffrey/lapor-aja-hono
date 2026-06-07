@@ -5,6 +5,7 @@ import commmentRoute from "./routes/comment.route";
 import userRoute from "./routes/user.route";
 import { cors } from "hono/cors";
 import * as Jwt from "jsonwebtoken"
+import notificationRoute from "./routes/notification.route";
 
 const app = new Hono()
 
@@ -29,6 +30,7 @@ app.route("/auth", authRoute)
 app.route("/reports", reportRoute)
 app.route("/comments", commmentRoute)
 app.route("/user", userRoute)
+app.route("/notifications", notificationRoute)
 
 app.get("/debug-token", async (c) => {
   const auth = c.req.header("Authorization")

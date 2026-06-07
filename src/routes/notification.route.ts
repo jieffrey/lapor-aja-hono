@@ -9,7 +9,7 @@ import {
 
 const notificationRoute = new Hono()
 
-notificationRoute.use("/*", verifyToken)
+notificationRoute.use("*", verifyToken)
 notificationRoute.get("/", getMyNotifications)
 notificationRoute.get("/unread-count", getUnreadCount)
 notificationRoute.patch("/read-all", markAllNotificationsRead)

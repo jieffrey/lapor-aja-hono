@@ -5,6 +5,7 @@ import {
     deleteUserService,
     getUserByIdService,
     updateUserRoleService,
+    getLeaderboardService
 } from "../services/user.service"
 
 export const getUsers = async (c: Context) => {
@@ -122,5 +123,15 @@ export const deleteUser = async (c: Context) => {
                 error
             }, 500
         )
+    }
+}
+
+export const getLeaderboard = async (c: Context) => {
+    try {
+        const users = await getLeaderboardService()
+        return c.json({ success: true, data: users })
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error)
+        return c.json({ success: false, message, error: message }, 500)
     }
 }

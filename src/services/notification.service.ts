@@ -133,9 +133,6 @@ export const notifyReportOwner = async (
     })
 }
 
-/**
- * Kirim notif ke pemilik laporan saat ada komentar baru
- */
 export const notifyNewComment = async (
     reportId: number,
     reportTitle: string,
@@ -144,15 +141,15 @@ export const notifyNewComment = async (
     commenterId: number
 ) => {
     // Jangan notif diri sendiri
-    if (ownerId === commenterId) return
+    if (Number(ownerId) === Number(commenterId)) return
 
     await createNotificationService({
-        user_id: ownerId,
+        user_id: Number(ownerId),
         type: "comment",
         title: "Komentar baru",
         message: `${commenterName} mengomentari "${reportTitle}"`,
         report_id: reportId,
-        triggered_by: commenterId,
+        triggered_by: Number(commenterId),
     })
 }
 

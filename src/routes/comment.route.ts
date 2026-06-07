@@ -2,14 +2,14 @@ import { Hono } from "hono";
 import { 
     createComment,
     getComment,
-    deleteComment
+    deleteComment,
+    getCommentByReport
 } from '../controllers/comment.controller';
 import { verifyToken } from "../middlewares/verify";
 
-const commmentRoute = new Hono()
+const commentRoute = new Hono()
+commentRoute.get("/report/:reportId", getCommentByReport)
+commentRoute.post("/", verifyToken, createComment)
+commentRoute.delete("/report/:reportId", verifyToken, deleteComment)
 
-commmentRoute.get("/report/:reportId", getComment)
-commmentRoute.post("/", verifyToken, createComment)
-commmentRoute.delete("/report/:reportId", verifyToken, deleteComment)
-
-export default commmentRoute
+export default commentRoute
