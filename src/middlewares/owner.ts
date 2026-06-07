@@ -9,8 +9,12 @@ export const ownerOnly = createMiddleware(async (c, next) => {
             | { id?: number | string; role?: string }
             | undefined;
 
-        if (payload?.role === "admin" || payload?.role === "superadmin") {
+        // Only admin can bypass ownership check; superadmin can only view
+        if (payload?.role === "admin") {
             return await next();
+        }
+        if (payload?.role === "superadmin") {
+            return c.json({ success: false, message: "Forbidden Access" }, 403);
         }
 
         const result = await pool.query(`SELECT * FROM report WHERE id = $1 `, [

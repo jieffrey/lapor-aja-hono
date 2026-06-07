@@ -6,8 +6,12 @@ import userRoute from "./routes/user.route";
 import { cors } from "hono/cors";
 import * as Jwt from "jsonwebtoken"
 import notificationRoute from "./routes/notification.route";
+import { setupPasswordResetTable } from "./services/user.service";
 
 const app = new Hono()
+
+// Ensure required tables and columns exist
+setupPasswordResetTable().catch(console.error)
 
 app.use(
   "*",

@@ -27,7 +27,7 @@ reportRoute.patch(
     console.log("AFTER VERIFY:", (c as any).get("jwtPayload"))
     await next()
   },
-  checkRole(["admin", "superadmin"]),
+  checkRole(["admin"]),
   updateReportStatus
 )
 reportRoute.delete("/:id", verifyToken, ownerOnly, deleteReport)
