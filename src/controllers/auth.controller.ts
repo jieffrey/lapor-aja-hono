@@ -9,6 +9,7 @@ import {
     validateResetTokenService,
     markTokenUsedService,
     updatePasswordService,
+    getUserByIdService
 } from "../services/user.service";
 
 export const register = async (c: Context) => {
@@ -185,4 +186,11 @@ export const resetPassword = async (c: Context) => {
     } catch (error) {
         return c.json({ success: false, message: "Gagal mereset password", error }, 500)
     }
+}
+
+export const getMe = async (c: Context) => {
+    const payload = c.get("jwtPayload") as { id: number }
+    const user = await getUserByIdService(String(payload.id))
+    if (!user) return c.json({ success: false, message: "User not found" }, 404)
+    return c.json({ success: true, data: user })
 }

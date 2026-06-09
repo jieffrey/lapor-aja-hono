@@ -102,6 +102,9 @@ export const updateUserRole =async (c: Context) => {
 export const updateUserProfile = async (c: Context) => {
     try {
         const id = c.req.param("id")
+        if (!id) {
+            return c.json({ success: false, message: "Missing id parameter" }, 400)
+        }
         const payload = c.get("jwtPayload") as { id: number; role: string }
 
         // Only the user themselves or superadmin can update profile
@@ -109,7 +112,7 @@ export const updateUserProfile = async (c: Context) => {
             return c.json({ success: false, message: "Forbidden Access" }, 403)
         }
 
-        const fields: { name?: string; email?: string; password?: string; avatar_url?: string } = {}
+        const fields: Record<string, string> = {}
 
         // Try formData first (supports file upload), fall back to JSON
         const contentType = c.req.header("content-type") ?? ""
