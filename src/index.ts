@@ -38,6 +38,26 @@ app.route("/user", userRoute)
 app.route("/notifications", notificationRoute)
 app.route("/ai", aiRoute)
 
+app.get("/debug-token", async (c) => {
+  const auth = c.req.header("Authorization")
+
+  console.log("AUTH:", auth)
+
+  if (!auth) {
+    return c.json({ error: "No Authorization header" })
+  }
+
+  const token = auth.replace("Bearer ", "")
+
+  console.log("TOKEN:", token)
+
+  const decoded = Jwt.verify(
+    token,
+    process.env.JWT_SECRET as string
+  )
+
+  return c.json(decoded)
+})
 
 
 export default {
